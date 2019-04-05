@@ -10,6 +10,6 @@ def index(request):
     user_list = list(Users.objects.all())
     usage = ""
     for u in user_list:
-        usage += "UserID: {}\t name: {}\t email: {}<br/>".format(u.userID,u.name,u.email)
+        usage += "name: {}\t email: {}<br/>".format(u.name,u.email)
     html = "<p> {} <p/>".format(usage)
     return HttpResponse(html)
