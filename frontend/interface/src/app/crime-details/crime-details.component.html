@@ -1,0 +1,19 @@
+<div *ngIf="crime">
+  <div>
+    <label>case_number: </label> {{crime.case_number}}
+  </div>
+  <div>
+    <label>Type: </label> {{crime.Type}}
+  </div>
+  <div>
+    <label>Arrested: </label> {{crime.arrested}}
+  </div>
+ 
+  <span class="button is-small btn-primary" *ngIf='crime.active' (click)='updateActive(false)'>Inactive</span>
+ 
+  <span class="button is-small btn-primary" *ngIf='!crime.active' (click)='updateActive(true)'>Active</span>
+ 
+  <span class="button is-small btn-danger" (click)='deleteCrime()'>Delete</span>
+ 
+  <hr />
+</div>

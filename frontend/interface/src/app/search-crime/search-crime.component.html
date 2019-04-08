@@ -1,0 +1,18 @@
+<h3>Find By Type</h3>
+<div style="width: 300px;">
+  
+<div class="form-group">
+      <label for="lastname">Age</label>
+      <input type="text" class="form-control" id="age" required="" ngmodel="" age="" name="age">
+</div>
+ 
+<div class="btn-group">
+      <button type="submit" class="btn btn-success">Submit</button>
+</div>
+  
+</div>
+<ul>
+   <li ngfor="let crime of crimes">
+<h4>{{crime.case_number}} - {{crime.type_crim}}</h4>
+</li>
+</ul>

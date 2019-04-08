@@ -1,0 +1,21 @@
+<h3>Create Crime</h3>
+<div [hidden]="submitted" style="width: 300px;">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="case_number">Case_number</label>
+      <input type="text" class="form-control" id="case_number" required [(ngModel)]="crime.case_number" name="case_number">
+    </div>
+ 
+    <div class="form-group">
+      <label for="type_crime">Crime Type</label>
+      <input type="text" class="form-control" id="type_crime" required [(ngModel)]="crime.type_crime" name="type_crime">
+    </div>
+ 
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+ 
+<div [hidden]="!submitted">
+  <h4>You submitted successfully!</h4>
+  <button class="btn btn-success" (click)="newCustomer()">Add</button>
+</div>
