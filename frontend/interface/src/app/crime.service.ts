@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CrimeService {
 
-  private baseUrl = 'http://localhost:8000/crime';
+  private baseUrl = 'http://neighborhood.web.illinois.edu/crime';
 
   constructor(private http: HttpClient) { }
 

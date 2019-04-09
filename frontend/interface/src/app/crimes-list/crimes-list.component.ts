@@ -22,7 +22,7 @@ export class CrimesListComponent implements OnInit {
     this.crimes = this.crimeService.getCrimesList();
   }
 
-  deleteCustomers() {
+  deleteCrimes() {
     this.crimeService.deleteAll()
       .subscribe(
         data => {
