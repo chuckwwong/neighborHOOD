@@ -31,7 +31,7 @@ export class CrimeDetailsComponent implements OnInit {
         error => console.log(error));
   }
  
-  deleteCustomer() {
+  deleteCrime() {
     this.crimeService.deleteCrime(this.crime.case_number)
       .subscribe(
         data => {

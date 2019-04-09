@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +49,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #cors    
+    'corsheaders.middleware.CorsMiddleware',  
+    'django.middleware.common.CommonMiddleware', 
 ]
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'localhost:4200',
+)
 
 ROOT_URLCONF = 'neighborhood.urls'
 
@@ -76,11 +85,11 @@ WSGI_APPLICATION = 'neighborhood.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+    'ENGINE': 'django.db.backends.mysql',
 	'OPTIONS':{
 		'read_default_file':'/etc/my.cnf'
 	},
-	'NAME': 'neighborhood_testdb',
+    'NAME': 'neighborhood_testdb',
 	'USER': 'neighborhood_root',
 	'PASSWORD': 'neighborhood',
 	'HOST': 'localhost',

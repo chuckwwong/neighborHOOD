@@ -10,6 +10,31 @@
       <label for="type_crime">Crime Type</label>
       <input type="text" class="form-control" id="type_crime" required [(ngModel)]="crime.type_crime" name="type_crime">
     </div>
+
+    <div class="form-group">
+      <label for="type_crime">Location</label>
+      <input type="text" class="form-control" id="location" required [(ngModel)]="crime.location" name="location">
+    </div>
+
+    <div class="form-group">
+      <label for="type_crime">Community Area</label>
+      <input type="text" class="form-control" id="community_area" required [(ngModel)]="crime.community_area" name="type_crime">
+    </div>
+
+    <div class="form-group">
+      <label for="type_crime">Email</label>
+      <input type="text" class="form-control" id="email" required [(ngModel)]="crime.email" name="email">
+    </div>
+
+    <div class="form-group">
+      <label for="type_crime">Date</label>
+      <input type="text" class="form-control" id="date" required [(ngModel)]="crime.date" name="date">
+    </div>
+
+    <div class="form-group">
+      <label for="type_crime">Arrested</label>
+      <input type="text" class="form-control" id="arrested" required [(ngModel)]="crime.arrested" name="arrested">
+    </div>
  
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
@@ -17,5 +42,5 @@
  
 <div [hidden]="!submitted">
   <h4>You submitted successfully!</h4>
-  <button class="btn btn-success" (click)="newCustomer()">Add</button>
+  <button class="btn btn-success" (click)="newCrime()">Add</button>
 </div>

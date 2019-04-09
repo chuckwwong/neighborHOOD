@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CrimeService {
 
-  private baseUrl = 'http://localhost:8000/crimes';
+  private baseUrl = 'http://localhost:8000/crime';
 
   constructor(private http: HttpClient) { }
 
@@ -30,8 +30,8 @@ export class CrimeService {
   getCrimesList(): Observable<any> {
     return this.http.get(`${this.baseUrl}/`);
   }
-  getCrimesByType(type_crime: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/type_crime/${type_crime}/`);
+  getCrimesByCA(community_area: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/ca/${community_area}/`);
   }
 
   deleteAll(): Observable<any> {

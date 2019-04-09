@@ -18,7 +18,7 @@ export class CreateCrimeComponent implements OnInit {
   ngOnInit() {
   }
 
-  newCustomer(): void {
+  newCrime(): void {
     this.submitted = false;
     this.crime = new Crime();
   }

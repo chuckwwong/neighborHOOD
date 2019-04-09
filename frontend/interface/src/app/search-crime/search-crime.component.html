@@ -1,18 +1,18 @@
-<h3>Find By Type</h3>
+<h3>Find By Community Area</h3>
 <div style="width: 300px;">
-  
+<form (ngSubmit)="onSubmit()">  
 <div class="form-group">
-      <label for="lastname">Age</label>
-      <input type="text" class="form-control" id="age" required="" ngmodel="" age="" name="age">
+      <label for="case_number">Community_Area</label>
+      <input type="text" class="form-control" id="community_area" required [(ngModel)] ="community_area" name="community_area">
 </div>
  
 <div class="btn-group">
       <button type="submit" class="btn btn-success">Submit</button>
 </div>
-  
+</form>  
 </div>
 <ul>
-   <li ngfor="let crime of crimes">
-<h4>{{crime.case_number}} - {{crime.type_crim}}</h4>
+   <li *ngFor="let crime of crimes">
+<h4>{{crime.case_number}} - {{crime.type_crime}}</h4>
 </li>
 </ul>
