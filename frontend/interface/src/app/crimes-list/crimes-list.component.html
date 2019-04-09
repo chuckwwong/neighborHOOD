@@ -1,0 +1,9 @@
+<h1>Crimes</h1>
+ 
+<div *ngFor="let crime of crimes | async" style="width: 300px;">
+  <crime-details [crime]='crime'></crime-details>
+</div>
+ 
+<div>
+  <button type="button" class="button btn-danger" (click)='deleteCrimes()'>Delete All</button>
+</div>
