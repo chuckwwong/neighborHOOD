@@ -80,9 +80,9 @@ DATABASES = {
 	'OPTIONS':{
 		'read_default_file':'/etc/my.cnf'
 	},
-        'NAME': 'testdb',
-	'USER': 'root',
-	'PASSWORD': 'cs411',
+	'NAME': 'neighborhood_testdb',
+	'USER': 'neighborhood_root',
+	'PASSWORD': 'neighborhood',
 	'HOST': 'localhost',
 	'PORT': '',
     }

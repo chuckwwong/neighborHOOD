@@ -22,7 +22,7 @@ class Users(models.Model):
             return False
 
 class Crime(models.Model):
-    case_number = models.IntegerField(primary_key=True)
+    case_number = models.AutoField(primary_key=True)
     location = models.CharField(max_length=100)
     community_area = models.IntegerField(null=True,default = None)
     date = models.CharField(max_length=50)
@@ -37,4 +37,4 @@ class Verify(models.Model):
     email = models.ForeignKey(Users, on_delete=models.CASCADE)
     arrested = models.BooleanField(default=False)
     def __str__(self):
-        return str(self.case_number)+"<- "+self.email
+        return unicode(self.case_number)+"<- "+unicode(self.email)
