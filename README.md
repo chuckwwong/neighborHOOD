@@ -1,7 +1,7 @@
 # neighborHOOD
 See how safe your neighborhood is!
 This project only has data on the city of Chicago.
-The link to the hosted website is http://neighborhood.web.cs.illinois.edu/.
+The link to the hosted website is http://neighborhood.web.illinois.edu/.
 
 
 ## Install Dependencies
