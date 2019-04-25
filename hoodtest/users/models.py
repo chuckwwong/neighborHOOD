@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+#from django.contrib.auth.models import AbstractUser
 #from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
@@ -26,9 +27,9 @@ class Crime(models.Model):
     location = models.CharField(max_length=100)
     community_area = models.IntegerField(null=True,default = None)
     date = models.CharField(max_length=50)
-    type_crime = models.CharField(max_length=40)\
+    type_crime = models.CharField(max_length=40)
     # just for the demo arrested is included
-    arrested = models.BooleanField(default=False)
+    # arrested = models.BooleanField(default=False)
     email = models.ForeignKey(Users, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -37,6 +38,6 @@ class Crime(models.Model):
 class Verify(models.Model):
     case_number = models.OneToOneField(Crime, on_delete=models.CASCADE,primary_key=True)
     email = models.ForeignKey(Users, on_delete=models.CASCADE)
-    # arrested = models.BooleanField(default=False)
+    arrested = models.BooleanField(default=False)
     def __str__(self):
         return unicode(self.case_number)+"<- "+unicode(self.email)
