@@ -5,7 +5,7 @@ from django.contrib.auth import logout, login, authenticate
 
 from rest_framework.parsers import JSONParser
 from rest_framework import status
-from rest_framework.permissions import isAuthenticated
+from rest_framework.permissions import IsAuthenticated
 
 from users.models import *
 from users.serializers import crimeSerializer

@@ -33,6 +33,7 @@ class Crime(models.Model):
     community_area = models.IntegerField(null=True,default = None)
     date = models.CharField(max_length=50)
     type_crime = models.CharField(max_length=40)
+    domestic = models.BooleanField(default=False)
     # just for the demo arrested is included
     # arrested = models.BooleanField(default=False)
     email = models.ForeignKey(Users, on_delete=models.CASCADE)
