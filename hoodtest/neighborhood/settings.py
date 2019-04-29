@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'neighborhood.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
@@ -96,7 +96,22 @@ DATABASES = {
 	'PORT': '',
     }
 }
+'''
+DATABASES = {
+    'default': {
+    'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS':{
+                'read_default_file':'/etc/my.cnf'
+        },
+    'NAME': 'testdb',
+        'USER': 'root',
+        'PASSWORD': 'cs411',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
+AUTH_USER_MODEL = 'users.Users'	# new
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

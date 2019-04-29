@@ -2,20 +2,25 @@
 from __future__ import unicode_literals
 
 from django.db import models
-#from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
 #from django.core.validators import MinValueValidator, MaxValueValidator
+from .managers import CustomUserManager
 
 # Create your models here.
-class Users(models.Model):
-    email = models.EmailField(primary_key=True,max_length=50)
-    password = models.CharField(max_length=20)
-    name = models.CharField(max_length=20)
+class Users(AbstractUser):
+    username = None
+    email = models.EmailField(_('email address'),unique=True)
     phone_num = models.CharField(max_length=10)
     # only admin can set pol_district for police accounts
-    pol_district = models.IntegerField(default=None,null=True)
+    pol_district = models.IntegerField(default=None,null=True,blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['phone_num','first_name','last_name']
+    objects = CustomUserManager()
 
     def __str__(self):
-        return self.email+": "+self.name
+        return self.email+": "+self.first_name+" "+self.last_name
     def isPolice(self):
         if self.pol_district:
             return True

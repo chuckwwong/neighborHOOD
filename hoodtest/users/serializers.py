@@ -11,5 +11,4 @@ class crimeSerializer(serializers.ModelSerializer):
                   'community_area',
                   'date',
                   'type_crime',
-                  'arrested',
                   'email')
