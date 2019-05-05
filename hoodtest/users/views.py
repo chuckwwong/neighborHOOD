@@ -16,7 +16,7 @@ from rest_framework.permissions import IsAuthenticated
 from users.models import *
 from users.serializers import *
 
-@csrf_exempt
+
 def crime_list(request):
 
     if request.method == 'GET':
@@ -37,18 +37,19 @@ def crime_list(request):
         Crime.objects.all().delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
-
-@csrf_exempt 
+# get crimes, modify crimes, and delete crimes
 def crime_detail(request, pk):
     try: 
         crime = Crime.objects.get(pk=pk) 
     except Crime.DoesNotExist: 
         return HttpResponse(status=status.HTTP_404_NOT_FOUND) 
 
+    # TODO: modify to parse by case_num
     if request.method == 'GET': 
         crime_serializer = crimeSerializer(crime) 
         return JsonResponse(crime_serializer.data) 
 
+    # TODO: modify to allow police to modify arrest, verify
     elif request.method == 'PUT': 
         crime_data = JSONParser().parse(request) 
         crime_serializer = crimeSerializer(crime, data=crime_data) 
@@ -57,12 +58,12 @@ def crime_detail(request, pk):
             return JsonResponse(crime_serializer.data) 
         return JsonResponse(crime_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
+    # TODO: delete by specific crime
     elif request.method == 'DELETE':
-        crime.delete() 
+        crime.delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT) 
 
-
-@csrf_exempt
+# list all crimes pertaining to a community area
 def crime_list_ca(request, ca):
     crimes = Crime.objects.filter(community_area = ca)
 
@@ -70,6 +71,61 @@ def crime_list_ca(request, ca):
         crimes_serializer = crimeSerializer(crimes, many=True)
         return JsonResponse(crimes_serializer.data, safe=False)
         # In order to serialize objects, we must set 'safe=False'
+
+# TODO: return list of user reported crimes that includes verified attribute
+# TODO: search by crime for police by case_number, and can edit and delete
+# 	list all unverified <- can edit and delete
+
+
+''' ADVANCED FUNCTIONS'''
+@api_view(['GET'])
+def get_safety_all(request):
+    '''
+    Chuck will do this
+    use the
+    '''
+    pass
+
+@api_view(['GET'])
+def get_safety_info(request):
+    '''
+    given latitude and longitude, collect all crimes in a radius and
+    predict safety value of that location, top 3 crimes that are most
+    likely to occur to you, and the corresponding location where it happens
+    
+    For Safety Index, weight it based on per crime, where crimes that directly affect you
+    like assult, burglary, or kidnapping have higher weights and things like "Human Trafficking"
+    that are dangerous, but like won' really directly affect you, or "Public Indecency" which is bad
+    but isn't like dangerous should have a lower weight.
+    TODO: Make sure to weight them properly, we have to explain this as an advanced function.
+ 
+    ONE idea to calculate the weight is once you collect all the crimes in an area, you multiply each 
+    crime by their corresponding weight then add them up. Then you could divide them by the total number
+    of crimes in that same area, but with the highest weight.
+    ex: if for a lat and long, there are 20 crimes near by, the safey index would be (total calculated sum)/20*5, if 5 
+    is the highest weight possible
+    if you have a better idea to get a weight, do that instead
+    TODO: ^ Make this a helper funciton so I can call it too in the other advanced feature
+
+    For most common crime, pick top 3, use aggregate function or something, that have occurred in that area.
+    For each crime from the top 3, pick the location that it is most likely to occur to you, so you only look at 
+    locations where this crime happened. The location we are talking about is "location_desc"
+    '''
+    # this pulls the latitude and longitude from front end request
+    lat = request.data.get('latitude')
+    lon = request.data.get('longitude')
+    
+    # TODO : return a json that lists
+    # {
+    #   "safe_idx":<some meaningful number>
+    #   "top_common_crime":[
+    #     list top 3 that can affect user
+    #     return it as tuple: (crime, location)
+    #                                  ^ location where that crime is most likely to happen to you
+    #   ]
+    # }
+    pass
+
 
 ''' USER INFO MODIFICATION '''
 
