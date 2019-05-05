@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -82,7 +84,7 @@ WSGI_APPLICATION = 'neighborhood.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
@@ -96,7 +98,22 @@ DATABASES = {
 	'PORT': '',
     }
 }
+'''
+DATABASES = {
+    'default': {
+    'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS':{
+                'read_default_file':'/etc/my.cnf'
+        },
+    'NAME': 'testdb',
+        'USER': 'root',
+        'PASSWORD': 'cs411',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
+AUTH_USER_MODEL = 'users.Users'	# new
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -135,3 +152,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    )
+}

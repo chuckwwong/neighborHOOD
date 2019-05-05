@@ -2,20 +2,25 @@
 from __future__ import unicode_literals
 
 from django.db import models
-#from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
 #from django.core.validators import MinValueValidator, MaxValueValidator
+from .managers import CustomUserManager
 
 # Create your models here.
-class Users(models.Model):
-    email = models.EmailField(primary_key=True,max_length=50)
-    password = models.CharField(max_length=20)
-    name = models.CharField(max_length=20)
+class Users(AbstractUser):
+    username = None
+    email = models.EmailField(_('email address'),unique=True)
     phone_num = models.CharField(max_length=10)
     # only admin can set pol_district for police accounts
-    pol_district = models.IntegerField(default=None,null=True)
+    pol_district = models.IntegerField(default=None,null=True,blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['phone_num','first_name','last_name']
+    objects = CustomUserManager()
 
     def __str__(self):
-        return self.email+": "+self.name
+        return self.email+": "+self.first_name+" "+self.last_name
     def isPolice(self):
         if self.pol_district:
             return True
@@ -25,13 +30,15 @@ class Users(models.Model):
 class Crime(models.Model):
     case_number = models.AutoField(primary_key=True)
     location = models.CharField(max_length=100)
+    location_desc = models.CharField(max_length=100)
     community_area = models.IntegerField(null=True,default = None)
     date = models.CharField(max_length=50)
     type_crime = models.CharField(max_length=40)
-    # just for the demo arrested is included
-    # arrested = models.BooleanField(default=False)
+    domestic = models.BooleanField(default=False)
     email = models.ForeignKey(Users, on_delete=models.CASCADE)
-    
+    latitude = models.DecimalField(max_digits=11,decimal_places=8)
+    longitude = models.DecimalField(max_digits=11,decimal_places=8)
+
     def __str__(self):
         return str(self.case_number)+": "+self.type_crime
 
