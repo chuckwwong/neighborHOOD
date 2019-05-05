@@ -1,0 +1,9 @@
+<div align = center>
+<h1> {{title}}</h1>
+
+<agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+  <agm-polygon *ngFor="let community of communityData; let index = index" [paths]="community.paths" (polyClick)="communityClicked(community.id,community.name)"></agm-polygon>
+  <!-- <agm-polygon [paths]="paths" (polyClick)="communityClicked()"></agm-polygon> -->
+  <agm-marker  [latitude]="lat" [longitude]="lng"></agm-marker>
+</agm-map>
+</div>

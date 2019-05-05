@@ -1,0 +1,53 @@
+<div>
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
+
+  <mdb-navbar-brand>
+    <a class="navbar-brand" href="home">Home</a>
+  </mdb-navbar-brand>
+
+  <mdb-icon fas icon="angle-left" size="lg" class="text-white mr-auto d-flex d-md-none align-self-center"></mdb-icon>
+
+  <links>
+
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link waves-light" href="profile" mdbWavesEffect>Profile<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-light" href="report" mdbWavesEffect>Make a Report</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-light" mdbWavesEffect>Crimes</a>
+      </li>
+
+    </ul>
+
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      <!-- <li class="nav-item avatar dropdown" dropdown> -->
+      <li class="nav-item">
+          <a class="nav-link waves-light" href="login" mdbWavesEffect>Login</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link waves-light" href="register" mdbWavesEffect>Register</a>
+      </li>
+        <!-- <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>Login</a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">PLACE HOLDER</a>
+
+        </div> -->
+      <!-- </li> -->
+    </ul>
+  </links>
+
+  
+
+</mdb-navbar>
+<router-outlet></router-outlet>
+</div>
+
+<div>
+  
+
+
+

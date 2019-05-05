@@ -1,0 +1,40 @@
+<div class="container">
+    <div [hidden]="submitted">
+      <h1>User Registration</h1>
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" id="email"
+                required
+                [(ngModel)]="model.email" name="email"
+                #name="ngModel">
+          <!-- <div [hidden]="name.valid || name.pristine"
+              class="alert alert-danger">
+            Username is required
+          </div> -->
+        </div>
+  
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" class="form-control" id="password"
+                [(ngModel)]="model.password" name="password">
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name"
+                  [(ngModel)]="model.name" name="name">
+          </div>
+
+          <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="text" class="form-control" id="phone"
+                    [(ngModel)]="model.phone" name="phone">
+            </div>  
+  
+        <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid">Register</button>
+        
+
+      </form>
+    </div>
+</div>
