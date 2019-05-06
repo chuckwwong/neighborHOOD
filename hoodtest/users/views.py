@@ -11,80 +11,101 @@ from rest_framework import status
 
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from users.models import *
 from users.serializers import *
 
 
+@api_view(['GET'])
+@parser_classes((JSONParser,))
 def crime_list(request):
-
     if request.method == 'GET':
-        crimes = Crime.objects.all()
-        crimes_serializer = crimeSerializer(crimes, many=True)
-        return JsonResponse(crimes_serializer.data, safe=False)
-        # In order to serialize objects, we must set 'safe=False'
+        crimes = CrimeVerified.objects.all()
+        ver_crimes_serializer = CrimeVerifiedSerializer(crimes, many=True)
+        # returns json as a list :(
+        return JsonResponse(ver_crimes_serializer.data, safe=False)
 
-    if request.method == 'POST':
-        crime_data = JSONParser().parse(request)
-        crime_serializer = crimeSerializer(data=crime_data)
-        if crime_serializer.is_valid():
-            crime_serializer.save()
-            return JsonResponse(crime_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(crime_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
-        Crime.objects.all().delete()
-        return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+@api_view(['GET','PUT','POST','DELETE'])
+@parser_classes((JSONParser,))
+@permission_classes((IsAuthenticated,))
+def crime_detail(request):
+    user = request._request.user
+    cn_id = request.data.get('case_number')
 
-# get crimes, modify crimes, and delete crimes
-def crime_detail(request, pk):
-    try: 
-        crime = Crime.objects.get(pk=pk) 
-    except Crime.DoesNotExist: 
-        return HttpResponse(status=status.HTTP_404_NOT_FOUND) 
-
-    # TODO: modify to parse by case_num
     if request.method == 'GET': 
-        crime_serializer = crimeSerializer(crime) 
-        return JsonResponse(crime_serializer.data) 
+        try:
+            ver_crime = CrimeVerified.objects.filter(case_number=cn_id)
+        except CrimeVerified.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+        ver_crime_serializer = CrimeVerifiedSerializer(ver_crime, many=True) 
+        return JsonResponse(ver_crime_serializer.data, status=status.HTTP_200_OK) 
 
-    # TODO: modify to allow police to modify arrest, verify
+    # TODO: modify report: allow police to modify arrest, verify
     elif request.method == 'PUT': 
-        crime_data = JSONParser().parse(request) 
-        crime_serializer = crimeSerializer(crime, data=crime_data) 
-        if crime_serializer.is_valid(): 
-            crime_serializer.save() 
-            return JsonResponse(crime_serializer.data) 
-        return JsonResponse(crime_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        crime_data = JSONParser().parse(request)
+        print crime_data 
+        #crime_serializer = crimeSerializer(crime, data=crime_data) 
+        #if crime_serializer.is_valid(): 
+        #    crime_serializer.save() 
+        #    return JsonResponse(crime_serializer.data) 
+        #return JsonResponse(crime_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        pass
 
-    # TODO: delete by specific crime
+    # TODO: add a crime: if police modify
+    elif request.method == 'POST':
+        #crime_data = request._request
+        #crime_serializer = crimeSerializer(data=crime_data)
+        #if crime_serializer.is_valid():
+        #     crime_serializer.save()
+	#     return JsonResponse(crime_serializer.data, status=status.HTTP_201_CREATED)
+	#return JsonResponse(cr,status=status.HTTP_400_BAD_REQUEST)
+        pass
+
     elif request.method == 'DELETE':
-        crime.delete()
-        return HttpResponse(status=status.HTTP_204_NO_CONTENT) 
+        if user.isPolice():
+            crime = Crime.objects.filter(case_number=cn_id)
+        else:
+            crime = Crime.objects.filter(case_number=cn_id,email=user.email)
+        if crime:
+            crime.delete()
+            return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
-# list all crimes pertaining to a community area
+@api_view(['GET'])
+@parser_classes((JSONParser,))
+@permission_classes((IsAuthenticated,)) 
 def crime_list_ca(request, ca):
-    crimes = Crime.objects.filter(community_area = ca)
+    ver_crimes = CrimeVerified.objects.filter(community_area = ca) 
+    ver_crime_serializer = CrimeVerifiedSerializer(ver_crimes, many=True)
+    return JsonResponse(ver_crime_serializer.data,status=status.HTTP_200_OK)
 
-    if request.method == 'GET': 
-        crimes_serializer = crimeSerializer(crimes, many=True)
-        return JsonResponse(crimes_serializer.data, safe=False)
-        # In order to serialize objects, we must set 'safe=False'
 
 # TODO: return list of user reported crimes that includes verified attribute
 # TODO: search by crime for police by case_number, and can edit and delete
 # 	list all unverified <- can edit and delete
 
+@api_view(['GET'])
+@parser_classes((JSONParser,))
+@permission_classes((IsAuthenticated,))
+def crime_search(request):
+    # start here
+    pass
+
 
 ''' ADVANCED FUNCTIONS'''
 @api_view(['GET'])
+@parser_classes((JSONParser,))
 def get_safety_all(request):
     '''
     Chuck will do this
     use the
     '''
     pass
+''' HELPER FUNCTION'''
+# def 
 
 @api_view(['GET'])
 def get_safety_info(request):
@@ -130,6 +151,7 @@ def get_safety_info(request):
 ''' USER INFO MODIFICATION '''
 
 @api_view(['GET','POST'])
+@parser_classes((JSONParser,))
 @permission_classes((IsAuthenticated,))
 def get_user_info(request):
     user = request._request.user
@@ -151,7 +173,24 @@ def get_user_info(request):
             user.last_name = l_name
         user.save()
         user_info = UserSerializer(user)
-        return JsonResponse(user_info.data,status=status.HTTP_200_OK,safe=False)
+        return JsonResponse(user_info.data,status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@parser_classes((JSONParser,))
+@permission_classes((IsAuthenticated,))
+def get_user_reported(request):
+    user = request._request.user
+    uname = user.email
+    reported = Crime.objects.filter(email=uname)
+    verified = []
+    for c in reported:
+        verified += [v for v in CrimeVerified.objects.filter(case_number=c.case_number)]
+    context = {"verified_email_list": verified }
+    serializer = crimeSerializer(reported,context=context, many=True)
+    # Returns json response as a list :( 
+    return JsonResponse(serializer.data, status=status.HTTP_200_OK, safe=False)
+
 
 @api_view(['POST'])
 @parser_classes((JSONParser,))
@@ -177,8 +216,10 @@ def register(request):
     except IntegrityError:
         return Response(status=status.HTTP_409_CONFLICT)
 
+
 @api_view(['POST'])
 @parser_classes((JSONParser,))
+@permission_classes((AllowAny,))
 def crime_login(request):
     uname = request.data.get('email')
     pword = request.data.get('password')
@@ -191,8 +232,10 @@ def crime_login(request):
     # generate token
     token, _ = Token.objects.get_or_create(user=user)
     r = Response()
+    r.status_code = status.HTTP_200_OK
     r.set_cookie(key="token",value=token.key)
     return r
+
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))

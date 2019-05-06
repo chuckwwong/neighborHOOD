@@ -10,7 +10,7 @@ from .managers import CustomUserManager
 # Create your models here.
 class Users(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'),unique=True)
+    email = models.EmailField(_('email address'),unique=True,primary_key=True)
     phone_num = models.CharField(max_length=10)
     # only admin can set pol_district for police accounts
     pol_district = models.IntegerField(default=None,null=True,blank=True)
@@ -48,3 +48,22 @@ class Verify(models.Model):
     arrested = models.BooleanField(default=False)
     def __str__(self):
         return unicode(self.case_number)+"<- "+unicode(self.email)
+
+class CrimeVerified(models.Model):
+    case_number = models.AutoField(primary_key=True)
+    location = models.CharField(max_length=100)
+    location_desc = models.CharField(max_length=100)
+    community_area = models.IntegerField(null=True,default=None)
+    date = models.CharField(max_length=40)
+    type_crime = models.CharField(max_length=40)
+    domestic = models.BooleanField(default=False)
+    reported_email = models.ForeignKey(Users,related_name='users_crime', on_delete=models.DO_NOTHING)
+    latitude = models.DecimalField(max_digits=11,decimal_places=8)
+    longitude = models.DecimalField(max_digits=11,decimal_places=8)
+    ver_case_num = models.OneToOneField(Crime, on_delete=models.DO_NOTHING)
+    verified_email = models.ForeignKey(Users,related_name='users_users', on_delete=models.DO_NOTHING)
+    arrested = models.BooleanField(default=False)
+    
+    class Meta:
+        managed = False
+        db_table = 'crime_verified'
