@@ -14,6 +14,11 @@ import { UserComponent } from './user/user.component';
 import { ReportCrimeComponent } from './report-crime/report-crime.component';
 import { HomeComponent } from './home/home.component';
 import { AgmCoreModule } from '@agm/core';
+import { CommunityComponent } from './community/community.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { VerifyComponent } from './verify/verify.component';
+import { ChartsModule } from 'ng2-charts';
+
 
 
 @NgModule({
@@ -23,7 +28,9 @@ import { AgmCoreModule } from '@agm/core';
     ProfileComponent,
     UserComponent,
     ReportCrimeComponent,
-    HomeComponent
+    HomeComponent,
+    CommunityComponent,
+    VerifyComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +42,9 @@ import { AgmCoreModule } from '@agm/core';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBi-XkK-GWM06l5QozA13mrEVUSjqCDa9I'
     }),
+    ReactiveFormsModule,
+    ChartsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

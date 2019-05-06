@@ -1,0 +1,41 @@
+<h1 align = center>
+  Crime Statistics for CA
+</h1>
+
+
+  <div align = center>
+      <table >
+          <tr>
+            <th>Total Crimes</th>
+            <th>Number of Arrested</th> 
+            <th>Number of Domestic</th>
+            <th>Most Common Type</th>
+          </tr>
+          <tr>
+            <td>1000</td>
+            <td>50</td> 
+            <td>50</td>
+            <td>Battery</td>
+          </tr>
+  
+        </table>
+  
+    <div style="width:700px;height:700px;" >
+      <div style="display: block">
+        <canvas baseChart width = '20'
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType">
+        </canvas>
+      </div>
+      <div style = "display: block">
+        <canvas baseChart
+          [data]="doughnutChartData"
+          [labels]="doughnutChartLabels"
+          [chartType]="doughnutChartType">
+        </canvas>
+      </div>    
+    </div>
+  </div>

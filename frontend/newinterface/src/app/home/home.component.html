@@ -2,8 +2,90 @@
 <h1> {{title}}</h1>
 
 <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
-  <agm-polygon *ngFor="let community of communityData; let index = index" [paths]="community.paths" (polyClick)="communityClicked(community.id,community.name)"></agm-polygon>
+  <agm-polygon *ngFor="let community of communityData; let index = index" [paths]="community.paths" (polyClick)="communityClicked(community.id,community.name)" 
+  [fillColor]="'#003366'" [fillOpacity] ='community.opacity' (polyMouseOver) = "polyMouseOver(community.opacity,community.id,community.name)" ></agm-polygon>
   <!-- <agm-polygon [paths]="paths" (polyClick)="communityClicked()"></agm-polygon> -->
   <agm-marker  [latitude]="lat" [longitude]="lng"></agm-marker>
 </agm-map>
 </div>
+
+<div align = center>
+  <span>Most Safe </span>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.0" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.1" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.2" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.3" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.4" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.5" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.6" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.7" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.8" />
+  </svg>
+  <svg width="50" height="30">
+    <rect width="300" height="100" style="fill:#003366;fill-opacity:0.9" />
+  </svg>
+  <svg width="50" height="30">
+      <rect width="300" height="100" style="fill:#003366;fill-opacity:1" />
+  </svg>
+  <span> Most Dangerous </span>  
+</div>
+
+<div align = center>
+  <h1>Chicago Crime Statistics</h1>
+</div>
+<div align = center>
+    <table >
+        <tr>
+          <th>Total Crimes</th>
+          <th>Number of Arrested</th> 
+          <th>Number of Domestic</th>
+          <th>Most Common Type</th>
+        </tr>
+        <tr>
+          <td>1000</td>
+          <td>50</td> 
+          <td>50</td>
+          <td>Battery</td>
+        </tr>
+
+      </table>
+
+  <div style="width:700px;height:700px;" >
+    <div style="display: block">
+      <canvas baseChart width = '20'
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [colors]="lineChartColors"
+                  [legend]="lineChartLegend"
+                  [chartType]="lineChartType">
+      </canvas>
+    </div>
+    <div style = "display: block">
+      <canvas baseChart
+        [data]="doughnutChartData"
+        [labels]="doughnutChartLabels"
+        [chartType]="doughnutChartType">
+      </canvas>
+    </div>    
+  </div>
+</div>
+
+
+
