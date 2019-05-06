@@ -52580,14 +52580,40 @@ export class HomeComponent implements OnInit {
   }
 
 
-  communityClicked(communityId,communityName) {
+  communityClicked(communityId,communityName,infoWindow,gm,$event) {
     console.log("you clicked " + communityId + ": " + communityName);
+
+    // window.location.href = '/community/' + communityId;
+    if (gm.lastOpen != null) {
+      gm.lastOpen.close();
+    }
+
+    gm.lastOpen = infoWindow;
+
+    infoWindow.open();
+  }
+  onClickInfoView(communityId,communityName) {
     window.location.href = '/community/' + communityId;
   }
 
-  polyMouseOver(communityOpacity,communityId,communityName){
-    console.log("you moused"+ communityId + ": " + communityName);
+  // polyMouseOver(communityId,communityName, infoWindow, gm){
+  //   console.log("you moused"+ communityId + ": " + communityName);
+  //   if (gm.lastOpen != null) {
+  //     gm.lastOpen.close();
+  //   }
+
+  //   gm.lastOpen = infoWindow;
+
+  //   infoWindow.open();
     
-  }
+  // }
+
+//   onMouseOut(infoWindow, $event: MouseEvent) {
+//     infoWindow.close();
+// }
+
+
+
+
 
 }
