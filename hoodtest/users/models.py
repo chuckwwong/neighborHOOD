@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from math import *
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
@@ -63,7 +64,19 @@ class CrimeVerified(models.Model):
     ver_case_num = models.OneToOneField(Crime, on_delete=models.DO_NOTHING)
     verified_email = models.ForeignKey(Users,related_name='users_users', on_delete=models.DO_NOTHING)
     arrested = models.BooleanField(default=False)
-    
+
+    def distance(self, base_lat, base_lon):
+        R = 6371000 # metres
+        lat1 = radians(self.latitude)
+        lat2 = radians(base_lat)
+        lat_diff = radians(float(base_lat) - float(self.latitude))
+        lon_diff = radians(float(base_lon) - float(self.longitude))
+        a = sin(lat_diff/2)**2 + cos(lat1) * cos(lat2) * sin(lon_diff/2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        d = R * c
+        d *= 0.621371 # convert to miles
+        return d
+
     class Meta:
         managed = False
         db_table = 'crime_verified'
