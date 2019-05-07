@@ -36,8 +36,8 @@ class Crime(models.Model):
     type_crime = models.CharField(max_length=40)
     domestic = models.BooleanField(default=False)
     email = models.ForeignKey(Users, on_delete=models.CASCADE)
-    latitude = models.DecimalField(max_digits=11,decimal_places=8)
-    longitude = models.DecimalField(max_digits=11,decimal_places=8)
+    latitude = models.DecimalField(max_digits=11,decimal_places=9)
+    longitude = models.DecimalField(max_digits=11,decimal_places=9)
 
     def __str__(self):
         return str(self.case_number)+": "+self.type_crime
@@ -58,8 +58,8 @@ class CrimeVerified(models.Model):
     type_crime = models.CharField(max_length=40)
     domestic = models.BooleanField(default=False)
     reported_email = models.ForeignKey(Users,related_name='users_crime', on_delete=models.DO_NOTHING)
-    latitude = models.DecimalField(max_digits=11,decimal_places=8)
-    longitude = models.DecimalField(max_digits=11,decimal_places=8)
+    latitude = models.DecimalField(max_digits=11,decimal_places=9)
+    longitude = models.DecimalField(max_digits=11,decimal_places=9)
     ver_case_num = models.OneToOneField(Crime, on_delete=models.DO_NOTHING)
     verified_email = models.ForeignKey(Users,related_name='users_users', on_delete=models.DO_NOTHING)
     arrested = models.BooleanField(default=False)
