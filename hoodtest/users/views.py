@@ -14,7 +14,7 @@ from rest_framework import status
 
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 
 from users.models import *
 from users.serializers import *
@@ -32,6 +32,25 @@ c_wts = {
         'PUBLIC INDECENCY': 1, 'PUBLIC PEACE VIOLATION': 2, 'RITUALISM': 1, 'ROBBERY': 5,
         'SEX OFFENSE': 4, 'STALKING': 3, 'THEFT': 5, 'WEAPONS VIOLATION': 3 
         }
+# center lat,lon values to set for new crimes
+lat_long_dict = {
+35: (41.8362095409,-87.6161477255), 36: (41.8222678696,-87.60026285), 37: (41.809542358,-87.6322509736), 38: (41.8123507322,-87.6191134411), 39: (41.8090960441,-87.5901452313),
+4: (41.9743040153,-87.694233228), 40: (41.7912001679,-87.617739511), 41: (41.7940778142,-87.584535138), 42: (41.7779565653,-87.584390255), 1: (42.0119378101,-87.6656766355),
+11: (41.9846030555,-87.7716020235), 12: (41.9963743663,-87.765847574),13: (41.9810071429,-87.7185850035), 14: (41.9693656816,-87.7181810818), 15: (41.956644545,-87.7687172416),
+16: (41.9543414926,-87.716140847), 17: (41.9471545872,-87.8107727056), 18: (41.9307256744,-87.7993214452), 19: (41.9276439091,-87.7665006335), 2: (41.999313932,-87.6971586831),
+20: (41.9226829552,-87.7330904469), 21: (41.9387830284,-87.7049350756), 22: (41.9230275473,-87.6965752676), 23: (41.9013359069,-87.7177029808),24: (41.9010893293,-87.6726292762),
+25: (41.8965015695,-87.7711925843), 26: (41.8763209431,-87.7308837893), 27: (41.8784793574,-87.7053283066), 28: (41.8773206336,-87.6627174304), 29: (41.862470109,-87.7163608445),
+3: (41.9656187046,-87.6446803779), 30: (41.837963862,-87.7136795265), 31: (41.8503172061,-87.663987764), 33: (41.8589792384,-87.6123942907), 34: (41.8418876716,-87.6341650177),
+10: (41.9839513994,-87.8042210551), 8: (41.8978269759,-87.6203973526), 32: (41.8815274719,-87.6187418312), 43: (41.76298428,-87.5592683512), 44: (41.7390824367,-87.6142443554),
+45: (41.7442281813,-87.5876862868), 46: (41.744864913,-87.5401780956), 47: (41.7277481781,-87.5965367548), 59: (41.8288014238,-87.6741758312), 6: (41.9441278382,-87.6466579503),
+48: (41.7292878193,-87.5711424151), 49: (41.7103965388,-87.6231500503),5: (41.9464543897,-87.6874851835), 50: (41.7048033335,-87.5983533597), 51: (41.6940951537,-87.5716512439),
+52: (41.7112327793,-87.5292081428), 53: (41.6685244409,-87.6369977412), 54: (41.6613180265,-87.6068314456), 55: (41.661290525,-87.5504940021), 56: (41.8001049167,-87.767985992),
+57: (41.8089779611,-87.7260409632), 58: (41.8182167076,-87.6972280732), 60: (41.8359446753,-87.6454612399), 61: (41.808242003,-87.660237206), 62: (41.7929943789,-87.7238712991),
+63: (41.7952558491,-87.6977384723), 64: (41.7790737604,-87.7736150521), 65: (41.7708255816,-87.7248804631), 66: (41.77272718,-87.6999594399), 67: (41.77895668,-87.6636076797),
+68: (41.7754365969,-87.6417517534), 69: (41.7651284246,-87.6168952468), 7: (41.9210517157,-87.6360355339), 70: (41.7447039349,-87.7079215645),
+71: (41.7429692699,-87.6549689029), 72: (41.7126121358,-87.6797878358), 73: (41.7194893672,-87.6497323872), 74: (41.6959887711,-87.7131433552),
+75: (41.6882212207,-87.6684404536), 76: (41.9762876744,-87.8794058447), 77: (41.9877902524,-87.6575486406), 9: (42.0086088728,-87.815907765),
+}
 
 @api_view(['GET'])
 @parser_classes((JSONParser,))
@@ -74,8 +93,6 @@ def crime_detail(request):
     date = request.data.get('date')
     type_c = request.data.get('type_crime')
     dome = request.data.get('domestic')
-    lat = request.data.get('latitude')
-    lon = request.data.get('longitude')
     verr = request.data.get('verify')
     arr = request.data.get('arrested')
 
@@ -90,16 +107,15 @@ def crime_detail(request):
             crime.location_desc = loc_d
         if ca:
             crime.community_area = ca
+            lat, lon = lat_long_dict[ca]
+            crime.latitude = lat
+            crime.longitude = lon
         if date:
             crime.date = date
         if type_c:
             crime.type_crime = type_c
         if dome:
             crime.domestic = dome
-        if lat:
-            crime.latitude = lat
-        if lon:
-            crime.longitude = lon
         crime.save()
         if user.isPolice():
             exist = True
@@ -127,8 +143,9 @@ def crime_detail(request):
         #return JsonResponse(crime_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
     elif request.method == 'POST':
-        if not loc or not loc_d or not ca or not date or not type_c or not lat or not lon:
+        if not loc or not loc_d or not ca or not date or not type_c:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        lat, lon = lat_long_dict[ca]
         if user.isPolice:
             if Crime.objects.filter(case_number=cn_id):
                 return Response(status=status.HTTP_409_CONFLICT)
@@ -222,11 +239,11 @@ def get_crime_weight_ca(crimes_list):
 def get_crime_weight(crimes_list):
     if crimes_list:
         count = len(crimes_list)
-        max_poss = count*5
+        max_val = count*5
         weight = 0
         for c in crimes_list:
             weight += c_wts[c.type_crime]
-        return float("{0:.1f}".format(math.ceil(float(weight)*10/max_val)/10.0))
+        return float("{0:.2f}".format(float(weight)*100/max_val))
     return 0
 
 @api_view(['GET'])
@@ -235,18 +252,7 @@ def get_safety_info(request):
     given latitude and longitude, collect all crimes in a radius and
     predict safety value of that location, top 3 crimes that are most
     likely to occur to you, and the corresponding location where it happens
-    
-    For Safety Index, weight it based on per crime, where crimes that directly affect you
-    like assult, burglary, or kidnapping have higher weights and things like "Human Trafficking"
-    that are dangerous, but like won' really directly affect you, or "Public Indecency" which is bad
-    but isn't like dangerous should have a lower weight.
-    TODO: Make sure to weight them properly, we have to explain this as an advanced function.
-
-    For most common crime, pick top 3, use aggregate function or something, that have occurred in that area.
-    For each crime from the top 3, pick the location that it is most likely to occur to you, so you only look at 
-    locations where this crime happened. The location we are talking about is "location_desc"
     '''
-    # this pulls the latitude and longitude from front end request
     lat = request.data.get('latitude')
     lon = request.data.get('longitude')
     
@@ -259,14 +265,29 @@ def get_safety_info(request):
     #                                  ^ location where that crime is most likely to happen to you
     #   ]
     # }
-    crimes = CrimeVerified.objects.all()
-    radius = []
-    for c in crimes:
-        if c.distance(lat,lon) <= 5:
-            radius.append(c)
-    max_weight = get_crime_weight(radius)
-    
-    return Response(status=status.HTTP_200_OK) #,safe=False)
+
+    # select top (3) with ties id, count from table1 order by count desc
+    with connection.cursor() as cursor: 
+        crimes = []
+        metrics = {}
+        for c in CrimeVerified.objects.raw("select * from crime_verified where latitude <= %s and latitude >= %s"
+        + "and longitude <= %s and longitude >= %s",[str(lat+0.02), str(lat-0.02), str(lon+0.02), str(lon-0.02)]):
+            crimes.append(c)
+        max_weight = get_crime_weight(crimes)
+        metrics["safe_idx"] = max_weight
+        cursor.execute("SELECT type_crime, count(*) total FROM crime_verified WHERE latitude <= %s and latitude >= %s"
+        + "and longitude <=%s and longitude >= %s GROUP BY type_crime ORDER BY total DESC LIMIT 3",[str(lat+0.02), str(lat-0.02), str(lon+0.02), str(lon-0.02)])
+        possible = cursor.fetchall()
+        index = 1
+        for tup in possible:
+            cursor.execute("SELECT location_desc, count(*) total FROM crime_verified WHERE latitude <= %s and latitude >= %s"
+            + "and longitude <= %s and longitude >= %s and type_crime = %s GROUP BY location_desc ORDER BY total DESC LIMIT 1",
+            [str(lat+0.02), str(lat-0.02), str(lon+0.02), str(lon-0.02),tup[0]])
+            poss_location = cursor.fetchone()
+            metrics["crime_type"+str(index)] = tup[0]
+            metrics["location_desc"+str(index)] = poss_location[0]
+            index += 1
+    return JsonResponse(data=metrics,status=status.HTTP_200_OK,safe=False)
 
 
 ''' USER INFO MODIFICATION '''
@@ -332,6 +353,8 @@ def register(request):
         return Response(status=status.HTTP_400_BAD_REQUEST,data=json_resp)
     
     try:
+        if Users.objects.filter(email=uname) == []:
+            return Response(status=status.HTTP_409_CONFLICT)
         u = Users(email=uname,password=pword,phone_num=p_num,first_name=f_name,last_name=l_name)
         u.set_password(pword)
         u.save()
@@ -342,7 +365,6 @@ def register(request):
 @csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))
-@permission_classes((AllowAny,))
 def crime_login(request):
     uname = request.data.get('email')
     pword = request.data.get('password')
