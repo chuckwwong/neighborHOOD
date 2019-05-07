@@ -1,0 +1,17 @@
+<div align = center>
+  <h1> {{title}}</h1>
+  
+  <agm-map #gm [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+    <agm-marker [latitude]="lat" [longitude]="lng"
+    (dragEnd)="markerDragEnd(m, $event)"
+    [markerDraggable]="true"></agm-marker>
+  </agm-map>
+</div>
+
+<div align = center>
+<h1>hello</h1>
+<p> {{lat}} - {{lng}}</p>
+
+</div>
+
+

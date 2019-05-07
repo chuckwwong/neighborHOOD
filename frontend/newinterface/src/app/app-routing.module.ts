@@ -7,6 +7,7 @@ import { ReportCrimeComponent } from './report-crime/report-crime.component';
 import { HomeComponent } from './home/home.component';
 import { CommunityComponent } from './community/community.component';
 import { VerifyComponent } from './verify/verify.component';
+import {MyhoodComponent} from './myhood/myhood.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'community', component: CommunityComponent },
   { path: 'verify', component: VerifyComponent },
+  { path: 'myhood', component: MyhoodComponent },
   // { path: '/community/', redirectTo: 'community', pathMatch: 'full' },
 
 ];

@@ -1,7 +1,10 @@
 <div align = center>
 <h1> {{title}}</h1>
+<!-- <button href = "myhood" class="btn btn-success">Check out yourHOOD</button> -->
+</div>
 
-<agm-map #gm [latitude]="lat" [zoom]="zoom" [longitude]="lng" (mapClick)="placeMarker($event)">
+<div align = center>
+<agm-map #gm [latitude]="lat" [zoom]="zoom" [longitude]="lng">
   <agm-polygon *ngFor="let community of communityData; let index = index" 
   [paths]="community.paths" 
   (polyClick)="communityClicked(community.id,community.name,infoWindow,gm)" 

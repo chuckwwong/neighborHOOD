@@ -18,6 +18,7 @@ import { CommunityComponent } from './community/community.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { VerifyComponent } from './verify/verify.component';
 import { ChartsModule } from 'ng2-charts';
+import { MyhoodComponent } from './myhood/myhood.component';
 
 
 
@@ -30,7 +31,8 @@ import { ChartsModule } from 'ng2-charts';
     ReportCrimeComponent,
     HomeComponent,
     CommunityComponent,
-    VerifyComponent
+    VerifyComponent,
+    MyhoodComponent
   ],
   imports: [
     BrowserModule,
