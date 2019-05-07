@@ -209,7 +209,7 @@ def crime_search(request):
 @parser_classes((JSONParser,))
 def get_safety_all(request):
     ca_crimes = {}
-    for i in range(78):
+    for i in range(1,78):
 	collect_ca = []
         collect_ca += [c for c in CrimeVerified.objects.filter(community_area = i)]
         ca_crimes[i] = collect_ca
@@ -353,7 +353,7 @@ def register(request):
         return Response(status=status.HTTP_400_BAD_REQUEST,data=json_resp)
     
     try:
-        if Users.objects.filter(email=uname) == []:
+        if Users.objects.filter(email=uname) != []:
             return Response(status=status.HTTP_409_CONFLICT)
         u = Users(email=uname,password=pword,phone_num=p_num,first_name=f_name,last_name=l_name)
         u.set_password(pword)
