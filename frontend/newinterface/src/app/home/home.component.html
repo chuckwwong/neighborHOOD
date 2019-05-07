@@ -7,8 +7,8 @@
   (polyClick)="communityClicked(community.id,community.name,infoWindow,gm)" 
   [fillColor]="'#003366'" [fillOpacity] ='community.opacity'>
     <agm-info-window [disableAutoPan]="false" #infoWindow
-    [latitude]="lat"
-    [longitude]="lng">
+    [latitude]="community.mlat"
+    [longitude]="community.mlong">
       <div>
       <label>CA: </label> {{community.id}}
       </div>
@@ -20,7 +20,7 @@
       </div>
     </agm-info-window>
   </agm-polygon>
-  <agm-marker  [latitude]="lat" [longitude]="lng"></agm-marker>
+  <!-- <agm-marker  [latitude]="lat" [longitude]="lng"></agm-marker> -->
 </agm-map>
 </div>
 

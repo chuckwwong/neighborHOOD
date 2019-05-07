@@ -11,12 +11,12 @@ export class ReportCrimeComponent implements OnInit {
 
   crime: Crime = new Crime();
 
-  type_crimes = ['Arson', 'Assault','Battery', 'Burglary', 'Concealed Carry License Violation','Criminal Abortion',
-  'Criminal Damage', 'Criminal Trespass',
-  'Crim Sexual Assault', 'Deceptive Practice', 'Gambling','Homicide','Human Trafficking', 'Interference with Public Officer',
-  'Intimidation','Kidnapping', 'Liquor Law Violation', 'Motor Vehicle Theft','Narcotics','Non-Criminal','Obscenity',
-  'Offense Involving Chilrden','Other Narcotic Violation', 'Other Offense','Prostitution','Public Indecency','Public Peace Violation',
-  'Ritualism','Robbery','Sex Offense','Stalking','Theft','Weapons Violation',];
+  type_crimes = ['ARSON', 'ASSAULT','BATTERY', 'BURGLARY', 'CONCEALED CARRY LICENSE VIOLATION','CRIMINAL ABORTION',
+  'CRIMINAL DAMAGE', 'CRIMINAL TRESPASS',
+  'CRIM SEXUAL ASSAULT', 'DECEPTIVE PRACTICE', 'GAMBLING','HOMICIDE','HUMAN TRAFFICKING', 'INTERFERENCE WITH PUBLIC OFFICER',
+  'INTIMIDATION','KIDNAPPING', 'LIQUOR LAW VIOLATION', 'MOTOR VEHICLE THEFT','NARCOTICS','NON-CRIMINAL','OBSCENITY',
+  'OFFENSE INVOLVING CHILRDEN','OTHER NARCOTIC VIOLATION', 'OTHER OFFENSE','PROSTITUTION','PUBLIC INDECENCY','PUBLIC PEACE VIOLATION',
+  'RITUALISM','ROBBERY','SEX OFFENSE','STALKING','THEFT','WEAPONS VIOLATION',];
   constructor(private crimeService: CrimeService) { }
 
   ngOnInit() {
