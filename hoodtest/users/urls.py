@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^polymap/', views.get_safety_all),
     url(r'^radiusmap/',views.get_safety_info),
     url(r'^user/$', views.get_user_info),
-    url(r'^user/report', views.get_user_reported),
+    url(r'^user/report/', views.get_user_reported),
     url(r'^user/register/', views.register),
     url(r'^user/login/', views.crime_login),
     url(r'^user/logout/', views.crime_logout)

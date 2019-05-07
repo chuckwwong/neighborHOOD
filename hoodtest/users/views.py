@@ -42,7 +42,7 @@ def crime_list(request):
         # returns json as a list :(
         return JsonResponse(ver_crimes_serializer.data, safe=False)
 
-
+@csrf_exempt
 @api_view(['GET','PUT','POST','DELETE'])
 @parser_classes((JSONParser,))
 @permission_classes((IsAuthenticated,))
@@ -270,7 +270,7 @@ def get_safety_info(request):
 
 
 ''' USER INFO MODIFICATION '''
-
+@csrf_exempt
 @api_view(['GET','PUT'])
 @parser_classes((JSONParser,))
 @permission_classes((IsAuthenticated,))
@@ -314,7 +314,7 @@ def get_user_reported(request):
     # Returns json response as a list :( 
     return JsonResponse(serializer.data, status=status.HTTP_200_OK, safe=False)
 
-
+@csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))
 def register(request):
@@ -339,7 +339,7 @@ def register(request):
     except IntegrityError:
         return Response(status=status.HTTP_409_CONFLICT)
 
-
+@csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))
 @permission_classes((AllowAny,))
@@ -359,7 +359,7 @@ def crime_login(request):
     r.set_cookie(key="token",value=token.key)
     return r
 
-
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def crime_logout(request):
