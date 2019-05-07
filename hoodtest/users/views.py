@@ -1,5 +1,7 @@
 import json
 import math
+import operator
+from django.db import connection
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -18,8 +20,18 @@ from users.models import *
 from users.serializers import *
 
 # weighted out of 5
-# c_wts = { "THEFT": , "BATTERY": ,"CRIMINAL DAMAGE":, "NARCOTICS": , ""}
-
+c_wts = {
+        'ARSON': 3, 'ASSAULT': 5, 'BATTERY': 5, 'BURGLARY': 5,
+        'CONCEALED CARRY LICENSE VIOLATION': 1, 'CRIMINAL ABORTION': 1,
+        'CRIMINAL DAMAGE': 1, 'CRIMINAL TRESPASS': 1, 'CRIM SEXUAL ASSAULT': 4, 
+        'DECEPTIVE PRACTICE': 2, 'GAMBLING': 2, 'HOMICIDE': 4, 'HUMAN TRAFFICKING': 2,
+        'INTERFERENCE WITH PUBLIC OFFICER': 2, 'INTIMIDATION': 3, 'KIDNAPPING': 4,
+        'LIQUOR LAW VIOLATION': 2, 'MOTOR VEHICLE THEFT': 3, 'NARCOTICS': 1,
+        'NON-CRIMINAL': 1, 'OBSCENITY': 1, 'OFFENSE INVOLVING CHILDREN': 4,
+        'OTHER NARCOTIC VIOLATION': 1, 'OTHER OFFENSE': 2, 'PROSTITUTION': 1,
+        'PUBLIC INDECENCY': 1, 'PUBLIC PEACE VIOLATION': 2, 'RITUALISM': 1, 'ROBBERY': 5,
+        'SEX OFFENSE': 4, 'STALKING': 3, 'THEFT': 5, 'WEAPONS VIOLATION': 3 
+        }
 
 @api_view(['GET'])
 @parser_classes((JSONParser,))
@@ -125,12 +137,13 @@ def crime_detail(request):
             crime = Crime(location=loc,location_desc=loc_d,community_area=ca,date=date,type_crime=type_c,domestic=dome,email=user,latitude=lat,longitude=lon)
         crime.save()
         if user.isPolice():
-            if verr:
-                verify = Verify(case_number=crime,email=user,arrested=arr)
-                verify.save()
-                ver_crime = CrimeVerified.objects.filter(case_number=crime.case_number)
-                ver_crime_info = CrimeVerifiedSerializer(ver_crime,many=True)
-                return JsonResponse(ver_crime_info.data,status=status.HTTP_201_CREATED,safe=False)
+            if arr is None:
+                arr = False
+            verify = Verify(case_number=crime,email=user,arrested=arr)
+            verify.save()
+            ver_crime = CrimeVerified.objects.filter(case_number=crime.case_number)
+            ver_crime_info = CrimeVerifiedSerializer(ver_crime,many=True)
+            return JsonResponse(ver_crime_info.data,status=status.HTTP_201_CREATED,safe=False)
         crime_serializer =crimeSerializer(crime)
         return JsonResponse(crime_serializer.data, status=status.HTTP_201_CREATED) 
         #crime_serializer = crimeSerializer(data=crime_data)
@@ -178,19 +191,43 @@ def crime_search(request):
 @api_view(['GET'])
 @parser_classes((JSONParser,))
 def get_safety_all(request):
-    ca_crimes = []
+    ca_crimes = {}
     for i in range(78):
-        ca_crimes.append([c for c in CrimeVerified.objects.filter(community_area = i)])
-    weights = get_crime_weight(ca_crimes)
-    max_w = max(weights)
-    for i in range(len(weights)):
-    # scale waits in rand 0 to 1, with values 0.1 or 0.2 etc
-        weights[i] = math.ceil()
+	collect_ca = []
+        collect_ca += [c for c in CrimeVerified.objects.filter(community_area = i)]
+        ca_crimes[i] = collect_ca
+    weights = get_crime_weight_ca(ca_crimes)
     # make into json and return
-    pass
+    return JsonResponse(data=weights,status=status.HTTP_200_OK,safe=False)
 
 ''' HELPER FUNCTION'''
-# def get_crime_weight(crimes_list)
+def get_crime_weight_ca(crimes_list):
+    crime_weight = {}
+    for ca, clist in crimes_list.items():
+        if clist:
+            # print ca, clist
+            count = len(clist)
+            max_poss = count * 5
+            weight = 0
+            for c in clist:
+                weight += c_wts[c.type_crime]
+            crime_weight[ca] = weight/float(max_poss)
+        else:
+            crime_weight[ca] = 0
+    max_val = max(crime_weight.iteritems(), key=operator.itemgetter(1))[1]
+    for ca, w in crime_weight.items():
+        crime_weight[ca] = float("{0:.1f}".format(math.ceil(float(w)*10/max_val)/10.0))
+    return crime_weight
+
+def get_crime_weight(crimes_list):
+    if crimes_list:
+        count = len(crimes_list)
+        max_poss = count*5
+        weight = 0
+        for c in crimes_list:
+            weight += c_wts[c.type_crime]
+        return float("{0:.1f}".format(math.ceil(float(weight)*10/max_val)/10.0))
+    return 0
 
 @api_view(['GET'])
 def get_safety_info(request):
@@ -204,14 +241,6 @@ def get_safety_info(request):
     that are dangerous, but like won' really directly affect you, or "Public Indecency" which is bad
     but isn't like dangerous should have a lower weight.
     TODO: Make sure to weight them properly, we have to explain this as an advanced function.
- 
-    ONE idea to calculate the weight is once you collect all the crimes in an area, you multiply each 
-    crime by their corresponding weight then add them up. Then you could divide them by the total number
-    of crimes in that same area, but with the highest weight.
-    ex: if for a lat and long, there are 20 crimes near by, the safey index would be (total calculated sum)/20*5, if 5 
-    is the highest weight possible
-    if you have a better idea to get a weight, do that instead
-    TODO: ^ Make this a helper funciton so I can call it too in the other advanced feature
 
     For most common crime, pick top 3, use aggregate function or something, that have occurred in that area.
     For each crime from the top 3, pick the location that it is most likely to occur to you, so you only look at 
@@ -230,7 +259,14 @@ def get_safety_info(request):
     #                                  ^ location where that crime is most likely to happen to you
     #   ]
     # }
-    pass
+    crimes = CrimeVerified.objects.all()
+    radius = []
+    for c in crimes:
+        if c.distance(lat,lon) <= 5:
+            radius.append(c)
+    max_weight = get_crime_weight(radius)
+    
+    return Response(status=status.HTTP_200_OK) #,safe=False)
 
 
 ''' USER INFO MODIFICATION '''
