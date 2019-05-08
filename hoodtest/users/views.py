@@ -65,7 +65,7 @@ def crime_list(request):
 @api_view(['GET','PUT','POST','DELETE'])
 @parser_classes((JSONParser,))
 @permission_classes((IsAuthenticated,))
-def crime_detail(requesti,pk):
+def crime_detail(request,pk):
     user = request._request.user
 
     if request.method == 'GET': 
@@ -75,7 +75,7 @@ def crime_detail(requesti,pk):
         ver_crime_serializer = CrimeVerifiedSerializer(ver_crime, many=True) 
         return JsonResponse(ver_crime_serializer.data, status=status.HTTP_200_OK, safe=False) 
 
-    cn_id = request.data.get('case_number')    
+    cn_id = int(request.data.get('case_number'))   
 
     if request.method == 'DELETE':
         if user.isPolice():
@@ -90,7 +90,7 @@ def crime_detail(requesti,pk):
 
     loc = request.data.get('location')
     loc_d = request.data.get('location_desc')
-    ca = request.data.get('community_area')
+    ca = int(request.data.get('community_area'))
     date = request.data.get('date')
     type_c = request.data.get('type_crime')
     dome = request.data.get('domestic')
