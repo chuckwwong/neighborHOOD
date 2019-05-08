@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class CrimeService {
 
-  private baseUrl = 'https://neighborhood.web.illinois.edu/crime';
-
+  //private baseUrl = 'https://neighborhood.web.illinois.edu/crime';
+  private baseUrl = 'http://172.22.148.191:8000/crime'
   constructor(private http: HttpClient) { }
 
   getCrime(case_number: number): Observable<object> {

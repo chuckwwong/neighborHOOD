@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'register', component: UserComponent },
   { path: 'report', component: ReportCrimeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'community', component: CommunityComponent },
+  { path: 'community/:id', component: CommunityComponent },
   { path: 'verify', component: VerifyComponent },
   { path: 'myhood', component: MyhoodComponent },
   // { path: '/community/', redirectTo: 'community', pathMatch: 'full' },

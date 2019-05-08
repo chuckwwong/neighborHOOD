@@ -6,7 +6,7 @@
           <label for="username">Email</label>
           <input type="text" class="form-control" id="username"
                 required
-                [(ngModel)]="model.username" name="username"
+                [(ngModel)]="email" name="username"
                 #name="ngModel">
           <!-- <div [hidden]="name.valid || name.pristine"
               class="alert alert-danger">
@@ -17,10 +17,11 @@
         <div class="form-group">
           <label for="password">Password</label>
           <input type="text" class="form-control" id="password"
-                [(ngModel)]="model.password" name="password">
+                [(ngModel)]="password" name="password">
         </div>
   
-        <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid">Login</button>
+        <button type="submit"  class="btn btn-success" [disabled]="!registerForm.form.valid">Login</button>
+        <p *ngIf = 'wrongPass && !submitted' > Wrong password or email</p>
         
 
       </form>

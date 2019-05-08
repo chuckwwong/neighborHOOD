@@ -6,7 +6,7 @@
           <label for="email">Email</label>
           <input type="text" class="form-control" id="email"
                 required
-                [(ngModel)]="model.email" name="email"
+                [(ngModel)]="email" name="email"
                 #name="ngModel">
           <!-- <div [hidden]="name.valid || name.pristine"
               class="alert alert-danger">
@@ -17,25 +17,25 @@
         <div class="form-group">
           <label for="password">Password</label>
           <input type="text" class="form-control" id="password"
-                [(ngModel)]="model.password" name="password">
+                [(ngModel)]="password" name="password">
         </div>
 
         <div class="form-group">
             <label for="firstname">First Name</label>
             <input type="text" class="form-control" id="firstname"
-                  [(ngModel)]="model.firstname" name="firstname">
+                  [(ngModel)]="first_name" name="firstname">
         </div>
 
         <div class="form-group">
           <label for="lastname">Last Name</label>
           <input type="text" class="form-control" id="lastname"
-                [(ngModel)]="model.lastname" name="lastname">
+                [(ngModel)]="last_name" name="lastname">
       </div>
 
         <div class="form-group">
             <label for="phone">Phone Number</label>
             <input type="text" class="form-control" id="phone"
-                  [(ngModel)]="model.phone" name="phone">
+                  [(ngModel)]="phone_num" name="phone">
         </div>  
   
         <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid">Register</button>

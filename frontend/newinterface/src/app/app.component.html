@@ -11,16 +11,16 @@
 
 
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+      <li *ngIf = "readLocalStorageValue('isLogged') == 'true'" class="nav-item">
         <a class="nav-link waves-light" href="profile" mdbWavesEffect>Profile<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
+      <li *ngIf = "readLocalStorageValue('isLogged') == 'true'" class="nav-item">
         <a class="nav-link waves-light" href="report" mdbWavesEffect>Make a Report</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf = "readLocalStorageValue('isPolice') == 'true'" class="nav-item">
         <a class="nav-link waves-light" href="verfiy" mdbWavesEffect>Crimes</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf = "readLocalStorageValue('isLogged') == 'true'" class="nav-item">
         <a class="nav-link waves-light" href="myhood" mdbWavesEffect>Check out yourHOOD</a>
       </li>
 
@@ -28,12 +28,16 @@
 
     <ul class="navbar-nav ml-auto nav-flex-icons">
       <!-- <li class="nav-item avatar dropdown" dropdown> -->
-      <li class="nav-item">
+      <li *ngIf = "readLocalStorageValue('isLogged') != 'true'" class="nav-item">
           <a class="nav-link waves-light" href="login" mdbWavesEffect>Login</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf = "readLocalStorageValue('isLogged') != 'true'" class="nav-item">
           <a class="nav-link waves-light" href="register" mdbWavesEffect>Register</a>
       </li>
+      <li *ngIf = "readLocalStorageValue('isLogged') == 'true'" class="nav-item">
+        <a class="nav-link waves-light" href="home" (click) = 'deleteToken()' mdbWavesEffect>Logout</a>
+    </li>
+
         <!-- <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>Login</a>
         <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
           <a class="dropdown-item waves-light" mdbWavesEffect href="#">PLACE HOLDER</a>
@@ -49,7 +53,6 @@
 <router-outlet></router-outlet>
 </div>
 
-<div>
   
 
 

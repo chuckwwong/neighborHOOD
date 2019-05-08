@@ -1,5 +1,5 @@
 <h1 align = center>
-  Crime Statistics for CA
+  Crime Statistics for Community Area: {{community_area}}
 </h1>
 
 
@@ -9,13 +9,13 @@
             <th>Total Crimes</th>
             <th>Number of Arrested</th> 
             <th>Number of Domestic</th>
-            <th>Most Common Type</th>
+            
           </tr>
           <tr>
-            <td>1000</td>
-            <td>50</td> 
-            <td>50</td>
-            <td>Battery</td>
+            <td align = center>{{totalCrime}}</td>
+            <td align = center>{{arrested}}</td> 
+            <td align = center>{{domestic}}</td>
+            
           </tr>
   
         </table>
@@ -39,3 +39,7 @@
       </div>    
     </div>
   </div>
+
+  <!-- <li *ngFor="let crime of crimes">
+    <h4>{{crime.case_number}} - {{crime.type_crime}}</h4>
+    </li> -->

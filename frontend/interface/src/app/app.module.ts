@@ -10,6 +10,7 @@ import { CreateCrimeComponent } from './create-crime/create-crime.component';
 import { SearchCrimeComponent } from './search-crime/search-crime.component';
 import { CrimeDetailsComponent } from './crime-details/crime-details.component';
 import { AppRoutingModule } from './app-routing.module';
+import { CrimeDetailComponent } from './crime-detail/crime-detail.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { AppRoutingModule } from './app-routing.module';
     CreateCrimeComponent,
     CrimeDetailsComponent,
     CrimesListComponent,
-    SearchCrimeComponent
+    SearchCrimeComponent,
+    CrimeDetailComponent
   ],
   imports: [
     BrowserModule,

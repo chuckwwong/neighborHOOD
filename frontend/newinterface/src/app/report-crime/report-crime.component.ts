@@ -10,6 +10,8 @@ import { Crime } from '../crime';
 export class ReportCrimeComponent implements OnInit {
 
   crime: Crime = new Crime();
+  
+  submitted = false;
 
   type_crimes = ['ARSON', 'ASSAULT','BATTERY', 'BURGLARY', 'CONCEALED CARRY LICENSE VIOLATION','CRIMINAL ABORTION',
   'CRIMINAL DAMAGE', 'CRIMINAL TRESPASS',
@@ -22,4 +24,37 @@ export class ReportCrimeComponent implements OnInit {
   ngOnInit() {
   }
 
+  reportCrime(){
+
+    
+
+    this.crimeService.postCrimeDetail(this.crime,'benpopo@police.com')
+    .subscribe(
+      data => {
+        console.log(data);
+        this.submitted = true;
+      },
+      error => console.log(error));
+  this.crime = new Crime();
+
+  }
+  onSubmit(){
+    // this.crime.latitude = '';
+    // this.crime.longitude = '';
+    this.crime.arrested = false;
+    this.crime.domestic = false;
+    // this.crime.verified_email = 'benpopo@police.com';
+    // this.crime.reported_email ='benpopo@police.com';
+    // this.crime.case_number = 0;
+    // this.crime.community_area = 1;
+    // this.crime.location = '';
+    // this.crime.location_desc = '';
+    // this.crime.type_crime = '';
+    // this.crime.date ='';
+  
+
+    console.log(this.crime);
+    this.reportCrime();
+    console.log(this.crime)
+  }
 }

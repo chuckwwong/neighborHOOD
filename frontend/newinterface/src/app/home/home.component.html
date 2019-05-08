@@ -8,7 +8,7 @@
   <agm-polygon *ngFor="let community of communityData; let index = index" 
   [paths]="community.paths" 
   (polyClick)="communityClicked(community.id,community.name,infoWindow,gm)" 
-  [fillColor]="'#003366'" [fillOpacity] ='community.opacity'>
+  [fillColor]="'#003366'" [fillOpacity] ='communityOpacity[community.id]'>
     <agm-info-window [disableAutoPan]="false" #infoWindow
     [latitude]="community.mlat"
     [longitude]="community.mlong">
@@ -65,45 +65,7 @@
   <span> Most Dangerous </span>  
 </div>
 
-<div align = center>
-  <h1>Chicago Crime Statistics</h1>
-</div>
-<div align = center>
-    <table >
-        <tr>
-          <th>Total Crimes</th>
-          <th>Number of Arrested</th> 
-          <th>Number of Domestic</th>
-          <th>Most Common Type</th>
-        </tr>
-        <tr>
-          <td>1000</td>
-          <td>50</td> 
-          <td>50</td>
-          <td>Battery</td>
-        </tr>
 
-      </table>
-
-  <div style="width:700px;height:700px;" >
-    <div style="display: block">
-      <canvas baseChart width = '20'
-                  [datasets]="lineChartData"
-                  [labels]="lineChartLabels"
-                  [colors]="lineChartColors"
-                  [legend]="lineChartLegend"
-                  [chartType]="lineChartType">
-      </canvas>
-    </div>
-    <div style = "display: block">
-      <canvas baseChart
-        [data]="doughnutChartData"
-        [labels]="doughnutChartLabels"
-        [chartType]="doughnutChartType">
-      </canvas>
-    </div>    
-  </div>
-</div>
 
 
 

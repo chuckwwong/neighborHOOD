@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { VerifyComponent } from './verify/verify.component';
 import { ChartsModule } from 'ng2-charts';
 import { MyhoodComponent } from './myhood/myhood.component';
+import { CrimeDetailsComponent } from './crime-details/crime-details.component';
 
 
 
@@ -32,7 +33,8 @@ import { MyhoodComponent } from './myhood/myhood.component';
     HomeComponent,
     CommunityComponent,
     VerifyComponent,
-    MyhoodComponent
+    MyhoodComponent,
+    CrimeDetailsComponent
   ],
   imports: [
     BrowserModule,
