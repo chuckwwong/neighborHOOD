@@ -231,9 +231,12 @@ def get_crime_weight_ca(crimes_list):
             crime_weight[ca] = weight/float(max_poss)
         else:
             crime_weight[ca] = 0
-    max_val = max(crime_weight.iteritems(), key=operator.itemgetter(1))[1]
+    #max_val = max(crime_weight.iteritems(), key=operator.itemgetter(1))[1]
+    #max_val = float(max(crime_weight, key = lambda ca: crime_weight[ca]))
+    max_val = max(crime_weight.values())
     for ca, w in crime_weight.items():
-        crime_weight[ca] = float("{0:.1f}".format(math.ceil(float(w)*10/max_val)/10.0))
+        crime_weight[ca] = float("{0:.1f}".format(math.floor(float(w)*10.0/max_val)/10.0))
+    #crime_weight[78] = max_val
     return crime_weight
 
 def get_crime_weight(crimes_list):
@@ -256,17 +259,6 @@ def get_safety_info(request):
     lat = request.data.get('latitude')
     lon = request.data.get('longitude')
     
-    # TODO : return a json that lists
-    # {
-    #   "safe_idx":<some meaningful number>
-    #   "top_common_crime":[
-    #     list top 3 that can affect user
-    #     return it as tuple: (crime, location)
-    #                                  ^ location where that crime is most likely to happen to you
-    #   ]
-    # }
-
-    # select top (3) with ties id, count from table1 order by count desc
     with connection.cursor() as cursor: 
         crimes = []
         metrics = {}
@@ -353,7 +345,8 @@ def register(request):
         return Response(status=status.HTTP_400_BAD_REQUEST,data=json_resp)
     
     try:
-        if Users.objects.filter(email=uname) != []:
+        user = Users.objects.filter(email=uname)
+        if user:
             return Response(status=status.HTTP_409_CONFLICT)
         u = Users(email=uname,password=pword,phone_num=p_num,first_name=f_name,last_name=l_name)
         u.set_password(pword)

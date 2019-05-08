@@ -2,11 +2,11 @@ from django.conf.urls import url
 from users import views
 
 urlpatterns = [
-    url(r'^$', views.crime_list),
+    url(r'^$', views.get_safety_all),
     url(r'^detail/$', views.crime_detail),
     url(r'^ca/(?P<ca>[0-9]+)/$', views.crime_list_ca),
     url(r'^search', views.crime_search),
-    url(r'^polymap/', views.get_safety_all),
+    # url(r'^polymap/', views.get_safety_all),
     url(r'^radiusmap/',views.get_safety_info),
     url(r'^user/$', views.get_user_info),
     url(r'^user/report/', views.get_user_reported),
