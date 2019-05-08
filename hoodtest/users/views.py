@@ -65,18 +65,19 @@ def crime_list(request):
 @api_view(['GET','PUT','POST','DELETE'])
 @parser_classes((JSONParser,))
 @permission_classes((IsAuthenticated,))
-def crime_detail(request):
+def crime_detail(requesti,pk):
     user = request._request.user
-    cn_id = request.data.get('case_number')
 
     if request.method == 'GET': 
-        ver_crime = CrimeVerified.objects.filter(case_number=cn_id)
+        ver_crime = CrimeVerified.objects.filter(pk=pk)
         if not ver_crime:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND)
         ver_crime_serializer = CrimeVerifiedSerializer(ver_crime, many=True) 
         return JsonResponse(ver_crime_serializer.data, status=status.HTTP_200_OK, safe=False) 
-    
-    elif request.method == 'DELETE':
+
+    cn_id = request.data.get('case_number')    
+
+    if request.method == 'DELETE':
         if user.isPolice():
             crime = Crime.objects.filter(case_number=cn_id)
         else:
@@ -249,7 +250,9 @@ def get_crime_weight(crimes_list):
         return float("{0:.2f}".format(float(weight)*100/max_val))
     return 0
 
-@api_view(['GET'])
+# NOT ACTUALLY A POST METHOD, BUT I WANT TO PASS IN LAT AND LONG SO Ls
+@csrf_exempt
+@api_view(['POST'])
 def get_safety_info(request):
     '''
     given latitude and longitude, collect all crimes in a radius and
