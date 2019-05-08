@@ -284,7 +284,7 @@ def get_safety_info(request):
 
 ''' USER INFO MODIFICATION '''
 @csrf_exempt
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT','DELETE'])
 @parser_classes((JSONParser,))
 @permission_classes((IsAuthenticated,))
 def get_user_info(request):
@@ -308,6 +308,15 @@ def get_user_info(request):
         user.save()
         user_info = UserSerializer(user)
         return JsonResponse(user_info.data,status=status.HTTP_200_OK)
+    elif request.method == 'DELETE':
+        print "logging out ", request._request.user.email
+        logout(request._request)
+        request.user.auth_token.delete()
+        user.delete()
+        r = Response()
+        r.delete_cookie('token')
+        r.status = status.HTTP_204_NO_CONTENT
+        return r
 
 
 @api_view(['GET'])
