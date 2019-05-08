@@ -256,8 +256,8 @@ def get_safety_info(request):
     predict safety value of that location, top 3 crimes that are most
     likely to occur to you, and the corresponding location where it happens
     '''
-    lat = request.data.get('latitude')
-    lon = request.data.get('longitude')
+    lat = float(request.data.get('latitude'))
+    lon = float(request.data.get('longitude'))
     
     with connection.cursor() as cursor: 
         crimes = []
