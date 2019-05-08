@@ -24,7 +24,7 @@
       </div> -->
 
       <div class="form-group">
-        <label for="type_crime">Location description</label>
+        <label for="location_desc">Location description</label>
         <input type="text" class="form-control" id="location_desc" required [(ngModel)]="crime.location_desc" name="location_desc">
     </div>
 
@@ -35,18 +35,18 @@
   </div> -->
 
       <div class="form-group">
-        <label for="type_crime">Block/Address</label>
+        <label for="location">Block/Address</label>
         <input type="text" class="form-control" id="location" required [(ngModel)]="crime.location" name="location">
       </div>
 
       <div class="form-group">
-        <label for="type_crime">Community Area</label>
-        <input type="text" class="form-control" id="community_area" required [(ngModel)]="crime.community_area" name="type_crime">
+        <label for="community_area">Community Area</label>
+        <input type="number" class="form-control" id="community_area" required [(ngModel)]="crime.community_area" name="community_area">
       </div>
 
 
       <div class="form-group">
-        <label for="type_crime">Date</label>
+        <label for="date">Date</label>
         <input type="text" class="form-control" id="date" required [(ngModel)]="crime.date" name="date">
       </div>
 

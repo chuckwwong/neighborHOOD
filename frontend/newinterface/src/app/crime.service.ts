@@ -53,7 +53,7 @@ export class CrimeService {
     return this.http.put(`${this.baseUrl}/user/`,	value, options);
   }
 
-  postCrimeDetail(crime: object,pk:string): Observable<any> {
+  postCrimeDetail(crime: object, pk: string): Observable<any> {
     let headers = new HttpHeaders();
     headers.append('Content-type', 'applications/json');
     let options =  ({headers:headers, withCredentials: true });

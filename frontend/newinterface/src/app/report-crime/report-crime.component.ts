@@ -10,7 +10,7 @@ import { Crime } from '../crime';
 export class ReportCrimeComponent implements OnInit {
 
   crime: Crime = new Crime();
-  
+  community_area: number;
   submitted = false;
 
   type_crimes = ['ARSON', 'ASSAULT','BATTERY', 'BURGLARY', 'CONCEALED CARRY LICENSE VIOLATION','CRIMINAL ABORTION',
@@ -27,22 +27,24 @@ export class ReportCrimeComponent implements OnInit {
   reportCrime(){
 
     
-
-    this.crimeService.postCrimeDetail(this.crime,'benpopo@police.com')
+    this.crimeService.postCrimeDetail(this.crime,localStorage.getItem('pk'))
     .subscribe(
       data => {
         console.log(data);
         this.submitted = true;
+        this.crime.community_area= Number(data.community_area);
       },
       error => console.log(error));
   this.crime = new Crime();
 
   }
   onSubmit(){
-    // this.crime.latitude = '';
-    // this.crime.longitude = '';
+    // this.crime.latitude = 41.878114;
+    // this.crime.longitude = -87.629798;
     this.crime.arrested = false;
     this.crime.domestic = false;
+    this.crime.verify = false;
+    
     // this.crime.verified_email = 'benpopo@police.com';
     // this.crime.reported_email ='benpopo@police.com';
     // this.crime.case_number = 0;
@@ -55,6 +57,6 @@ export class ReportCrimeComponent implements OnInit {
 
     console.log(this.crime);
     this.reportCrime();
-    console.log(this.crime)
+    console.log(this.crime);
   }
 }

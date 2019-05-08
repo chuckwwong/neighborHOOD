@@ -68,6 +68,7 @@ export class CommunityComponent implements OnInit {
             tempdata += 1;
             this.totalCrime = tempdata;
             let timeidx = value.date.substring(11, value.date.indexOf(':'));
+            console.log(timeidx);
 
             let tempLinedata = [...this.lineData];
             tempLinedata[timeidx] += 1;

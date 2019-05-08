@@ -38,7 +38,7 @@
     <!-- <input *ngIf = 'edit' type="text" [formControl]="phone_num" /> -->
   </div>
   <div>
-    <button *ngIf = '!edit' (click)="editUser()" class="btn btn-success" >Change Password</button>
+    <button *ngIf = '!edit' (click)="editUser()" class="btn btn-success" >Change Phone Number</button>
     <button *ngIf = '!edit' (click)="deleteUser()" class="btn btn-success" >Delete Account</button>
     
   </div>
@@ -59,7 +59,7 @@
 
 <div align = 'center'>
   <h1>User Reported Crimes</h1>
-  <li *ngFor="let crime of crimes">
-    <h4>{{crime.case_number}} - {{crime.verified}}</h4>
-  </li>
+  <ul *ngFor="let crime of crimes">
+    <h4>Case Number:{{crime.case_number}} Verified:{{crime.verified}}</h4>
+  </ul>
 </div>  

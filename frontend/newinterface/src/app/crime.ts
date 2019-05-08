@@ -7,8 +7,9 @@ export class Crime {
     type_crime: string;
     domestic: boolean;
     reported_email: string;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     verified_email: string;
     arrested: boolean;
+    verify: boolean;
 }
