@@ -378,7 +378,11 @@ def crime_login(request):
         return Response({"token": ""}, status=status.HTTP_403_FORBIDDEN)
     # generate token
     token, _ = Token.objects.get_or_create(user=user)
+    usage = {}
+    usage["isPolice"] = user.isPolice()
+    usage["Authorization"] = "Token "+ token.key
     r = Response()
+    r.data = usage
     r.status_code = status.HTTP_200_OK
     r.set_cookie(key="token",value=token.key)
     return r

@@ -56,10 +56,12 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware', 
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = DEBUG # will change if we deploy front end on cpanel
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
 )
+CORS_ALLOW_CREDENTIALS = DEBUG
+SESSION_COOKIE_SAMESITE = None
 
 ROOT_URLCONF = 'neighborhood.urls'
 
@@ -112,6 +114,7 @@ DATABASES = {
         'PORT': '',
     }
 }
+
 AUTH_USER_MODEL = 'users.Users'	# new
 
 # Password validation
