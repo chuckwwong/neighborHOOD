@@ -3,7 +3,7 @@ from users import views
 
 urlpatterns = [
     url(r'^$', views.get_safety_all),
-    url(r'^detail/<int:pk>$', views.crime_detail),
+    url(r'^detail/(?P<pk>[0-9]*)$', views.crime_detail),
     url(r'^ca/(?P<ca>[0-9]+)/$', views.crime_list_ca),
     url(r'^search$', views.crime_search),
     # url(r'^polymap/', views.get_safety_all),
