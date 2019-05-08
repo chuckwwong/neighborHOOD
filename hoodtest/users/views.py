@@ -380,7 +380,7 @@ def crime_login(request):
     token, _ = Token.objects.get_or_create(user=user)
     usage = {}
     usage["isPolice"] = user.isPolice()
-    usage["Authorization"] = "Token "+ token.key
+    usage["Authorization"] = token.key
     r = Response()
     r.data = usage
     r.status_code = status.HTTP_200_OK
