@@ -69,28 +69,34 @@ def crime_detail(request,pk):
     user = request._request.user
 
     if request.method == 'GET': 
+        
+        #verif = [v.case_number for v in Verify.objects.filter(case_number=pk)]
+        #arrest = [v.case_number for v in Verify.objects.filter(case_number=pk,arrested=True)]
+        #context = {"verified_email_list": verif, "arrested_email_list": arrest }
+        crime = Crime.objects.filter(case_number=pk)
+        crime_info = crimeSerializer(crime, many = True) #, context=context, many=True)
+        return JsonResponse(crime_info.data,status=status.HTTP_200_OK, safe=False)
+        '''
         ver_crime = CrimeVerified.objects.filter(pk=pk)
         if not ver_crime:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND)
         ver_crime_serializer = CrimeVerifiedSerializer(ver_crime, many=True) 
         return JsonResponse(ver_crime_serializer.data, status=status.HTTP_200_OK, safe=False) 
-
-    cn_id = int(request.data.get('case_number'))   
-
-    if request.method == 'DELETE':
+        '''
+    elif request.method == 'DELETE':
         if user.isPolice():
-            crime = Crime.objects.filter(case_number=cn_id)
+            crime = Crime.objects.filter(pk=pk)
         else:
-            crime = Crime.objects.filter(case_number=cn_id,email=user.email)
+            crime = Crime.objects.filter(pk=pk,email=user.email)
         if crime:
             crime.delete()
             return HttpResponse(status=status.HTTP_204_NO_CONTENT)
         else:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND)
-
+    cn_id = request.data.get('case_number')
     loc = request.data.get('location')
     loc_d = request.data.get('location_desc')
-    ca = int(request.data.get('community_area'))
+    ca = request.data.get('community_area')
     date = request.data.get('date')
     type_c = request.data.get('type_crime')
     dome = request.data.get('domestic')
@@ -99,7 +105,7 @@ def crime_detail(request,pk):
 
     if request.method == 'PUT':
         try:     
-            crime = Crime.objects.get(case_number=cn_id)
+            crime = Crime.objects.get(case_number=int(cn_id))
         except Crime.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         if loc:
@@ -107,6 +113,7 @@ def crime_detail(request,pk):
         if loc_d:
             crime.location_desc = loc_d
         if ca:
+            ca = int(ca)
             crime.community_area = ca
             lat, lon = lat_long_dict[ca]
             crime.latitude = lat
@@ -121,7 +128,7 @@ def crime_detail(request,pk):
         if user.isPolice():
             exist = True
             try:
-                verified = Verify.objects.get(case_number=cn_id)
+                verified = Verify.objects.get(case_number=int(cn_id))
             except Verify.DoesNotExist:
                 exist = False
             if not exist:
@@ -135,8 +142,8 @@ def crime_detail(request,pk):
                     if arr != None:
                         verified.arrested = arr
                         verified.save()
-        verif = [v.case_number for v in Verify.objects.filter(case_number=cn_id)]
-        arrest = [v.case_number for v in Verify.objects.filter(case_number=cn_id,arrested=True)]
+        verif = [v.case_number for v in Verify.objects.filter(case_number=int(cn_id))]
+        arrest = [v.case_number for v in Verify.objects.filter(case_number=int(cn_id),arrested=True)]
         context = {"verified_email_list": verif, "arrested_email_list": arrest }
         crime_info = crimeSerializer(crime, context=context) 
         #if crime_serializer.is_valid():
@@ -146,14 +153,20 @@ def crime_detail(request,pk):
     elif request.method == 'POST':
         if not loc or not loc_d or not ca or not date or not type_c:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        ca = int(ca)
         lat, lon = lat_long_dict[ca]
+        '''
         if user.isPolice:
             if Crime.objects.filter(case_number=cn_id):
                 return Response(status=status.HTTP_409_CONFLICT)
             crime = Crime(case_number=cn_id,location=loc,location_desc=loc_d,community_area=ca,date=date,type_crime=type_c,domestic=dome,email=user,latitude=lat,longitude=lon)
         else:
             crime = Crime(location=loc,location_desc=loc_d,community_area=ca,date=date,type_crime=type_c,domestic=dome,email=user,latitude=lat,longitude=lon)
+        '''
+        print "creating"
+        crime = Crime(location=loc,location_desc=loc_d,community_area=ca,date=date,type_crime=type_c,domestic=dome,email=user,latitude=lat,longitude=lon)
         crime.save()
+
         if user.isPolice():
             if arr is None:
                 arr = False
@@ -179,9 +192,8 @@ def crime_list_ca(request, ca):
     return JsonResponse(ver_crime_serializer.data,status=status.HTTP_200_OK, safe=False)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @parser_classes((JSONParser,))
-@permission_classes((IsAuthenticated,))
 def crime_search(request):
     # start here
     cn_id = request.data.get('case_number')
@@ -197,6 +209,7 @@ def crime_search(request):
         crime_info = crimeSerializer(unverified, many=True)
         return JsonResponse(crime_info.data,status=status.HTTP_200_OK,safe=False)
     else:
+        cn_id = int(cn_id)
         crime = Crime.objects.filter(case_number = cn_id)
         verif = [v.case_number for v in Verify.objects.filter(case_number=cn_id)]
         arrest = [v.case_number for v in Verify.objects.filter(case_number=cn_id,arrested=True)]
@@ -292,6 +305,7 @@ def get_safety_info(request):
 @permission_classes((IsAuthenticated,))
 def get_user_info(request):
     user = request._request.user
+    print user
     if request.method == 'GET':
         user_info = UserSerializer(user)
         return JsonResponse(user_info.data, safe=False)

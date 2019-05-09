@@ -2,9 +2,9 @@ import json
 import pymysql
 connection = pymysql.connect(
                             host = 'localhost',
-                            user = 'neighborhood_root',
-                            password = 'neighborhood',
-                            db = 'neighborhood_testdb')
+                            user = 'root',
+                            password = 'cs411',
+                            db = 'testdb')
 try:
     with connection.cursor() as cursor:
         with open("crimetotal.json") as json_file:
