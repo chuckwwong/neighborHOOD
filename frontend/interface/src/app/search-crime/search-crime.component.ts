@@ -23,10 +23,12 @@ export class SearchCrimeComponent implements OnInit {
     this.crimes = [];
     this.dataService.getCrimesByCA(this.community_area)
       .subscribe(crimes => this.crimes = crimes);
+    console.log(this.crimes)  
   }
  
   onSubmit() {
     this.searchCrimes();
+    //console.log(this.crimes)
   }
  
 }

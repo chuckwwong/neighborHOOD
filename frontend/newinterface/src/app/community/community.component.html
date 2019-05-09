@@ -1,0 +1,45 @@
+<h1 align = center>
+  Crime Statistics for Community Area: {{community_area}}
+</h1>
+
+
+  <div align = center>
+      <table >
+          <tr>
+            <th>Total Crimes</th>
+            <th>Number of Arrested</th> 
+            <th>Number of Domestic</th>
+            
+          </tr>
+          <tr>
+            <td align = center>{{totalCrime}}</td>
+            <td align = center>{{arrested}}</td> 
+            <td align = center>{{domestic}}</td>
+            
+          </tr>
+  
+        </table>
+  
+    <div style="width:700px;height:700px;" >
+      <div style="display: block">
+        <canvas baseChart width = '20'
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType">
+        </canvas>
+      </div>
+      <div style = "display: block">
+        <canvas baseChart
+          [data]="doughnutChartData"
+          [labels]="doughnutChartLabels"
+          [chartType]="doughnutChartType">
+        </canvas>
+      </div>    
+    </div>
+  </div>
+
+  <!-- <li *ngFor="let crime of crimes">
+    <h4>{{crime.case_number}} - {{crime.type_crime}}</h4>
+    </li> -->

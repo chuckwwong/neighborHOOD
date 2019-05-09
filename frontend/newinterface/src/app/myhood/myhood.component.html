@@ -1,0 +1,45 @@
+<div align = center>
+  <h1> {{title}}</h1>
+  
+  <agm-map #gm [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+    <agm-marker [latitude]="lat" [longitude]="lng"
+    (dragEnd)="markerDragEnd(m, $event)"
+    [markerDraggable]="true"></agm-marker>
+  </agm-map>
+</div>
+
+<div align = center>
+<h1>Safety Rating at {{lat}} - {{lng}} is {{idx}}</h1>
+<table >
+  <tr>
+    <th></th>
+    <th>Type of Crime</th> 
+    <th>Location</th>
+    
+  </tr>
+  <tr>
+    <td align = center>1</td>
+    <td align = center>{{c1}}</td> 
+    <td align = center>{{t1}}</td>
+    
+  </tr>
+  <tr>
+    <td align = center>2</td>
+    <td align = center>{{c2}}</td> 
+    <td align = center>{{t2}}</td>
+    
+  </tr>
+  <tr>
+    <td align = center>3</td>
+    <td align = center>{{c3}}</td> 
+    <td align = center>{{t3}}</td>
+    
+  </tr>
+  
+
+</table>
+
+
+</div>
+
+

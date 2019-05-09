@@ -1,0 +1,23 @@
+<div align = 'center' >
+<h3>Police Only</h3>
+<div style="width: 300px;">
+<form (ngSubmit)="onSubmit()">  
+<div class="form-group">
+      <label for="case_number">Find by Case Number</label>
+      <input type="text" class="form-control" id="case_number" required [(ngModel)] ="case_number" name="case_number">
+</div>
+ 
+<div class="btn-group">
+      <button type="submit" class="btn btn-success">Submit</button>
+</div>
+</form>  
+</div>
+<div align = 'center' >
+<ul>
+  
+ 
+    <div *ngFor="let crime of crimes | async" style="width: 300px;">
+      <crime-details [crime]='crime'></crime-details>
+    </div>
+</ul>
+</div>

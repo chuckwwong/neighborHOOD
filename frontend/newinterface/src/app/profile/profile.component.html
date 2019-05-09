@@ -1,0 +1,65 @@
+<div align = center>
+<h1>Profile</h1>
+ 
+<div *ngIf = '!edit' class="container">
+  <div>
+    <label>
+      Email: 
+    </label>
+    <span *ngIf ='!edit' >{{user.email}} </span>
+    <!-- <input *ngIf = 'edit' type="text" [formControl]="email" /> -->
+  </div>
+  <!-- <div class="form-group">
+    <label>
+      Password: 
+    </label>
+    <span *ngIf ='!edit' >{{password}} </span>
+    <input *ngIf = 'edit' type="text" formControlName="'user.password'" />
+  </div> -->
+  <div>
+    <label>
+      First Name:
+    </label>
+    <span *ngIf ='!edit' >{{user.first_name}} </span>
+    <!-- <input *ngIf = 'edit' type="text" [formControl]="first_name" /> -->
+  </div>
+  <div>
+    <label>
+      Last Name:
+    </label>
+    <span *ngIf ='!edit' >{{user.last_name}} </span>
+    <!-- <input *ngIf = 'edit' type="text" [formControl]="last_name" /> -->
+  </div>
+  <div>
+    <label>
+      Phone Number:
+    </label>
+    <span *ngIf ='!edit' >{{user.phone_num}} </span>
+    <!-- <input *ngIf = 'edit' type="text" [formControl]="phone_num" /> -->
+  </div>
+  <div>
+    <button *ngIf = '!edit' (click)="editUser()" class="btn btn-success" >Change Phone Number</button>
+    <button *ngIf = '!edit' (click)="deleteUser()" class="btn btn-success" >Delete Account</button>
+    
+  </div>
+</div>
+<div *ngIf = 'edit' >
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+          <label for="newPhone">New Phone Number</label>
+          <input type="text" class="form-control" id="newPhone" required [(ngModel)]="newPhone" name="newPhone">
+      </div>
+      <button *ngIf = 'edit' type = 'submit' class="btn btn-success">Save</button>
+    </form>
+
+  
+  <button *ngIf = 'edit' (click)="cancel()" class="btn btn-success">Cancel</button>
+</div>
+
+<div align = 'center'>
+  <h1>User Reported Crimes</h1>
+  <ul *ngFor="let crime of crimes">
+    <h4>Case Number:{{crime.case_number}} Verified:{{crime.verified}}</h4>
+  </ul>
+</div>  
